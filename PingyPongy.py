@@ -3,6 +3,7 @@ import random
 import winsound
 
 # Player Control Guide
+# ek function me co-ordinates bheke aur ek loop me arrow banayenge
 def guide_arrow(x,y,b,x1,y1,txt):
 	arr = turtle.Turtle()
 	arr.color("white")
@@ -98,7 +99,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 270)
-pen.write("Player L : 0\t\t\tPlayer R : 0", align = "center",font = ("roboto", 24, "bold"))
+pen.write("Player L : 0\t\t\tPlayer R : 0", align = "center",font = ("Courier", 24, "bold"))
 
 wn.update()
 
@@ -172,7 +173,7 @@ def run_game():
 			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 			r_score += 1
 			pen.clear()
-			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("roboto", 24, "bold"))
+			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("Courier", 24, "bold"))
 			plate_l.goto(-460,0)
 			plate_r.goto( 460,0)
 			gs.write("PRESS ANY KEY TO START", align="center",font=("Arial", 24, "bold"))
@@ -186,7 +187,7 @@ def run_game():
 			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 			l_score += 1
 			pen.clear()
-			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("roboto", 24, "bold"))
+			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("Courier", 24, "bold"))
 			plate_l.goto(-460,0)
 			plate_r.goto( 460,0)
 			gs.write("PRESS ANY KEY TO START", align="center",font=("Arial", 24, "bold"))
