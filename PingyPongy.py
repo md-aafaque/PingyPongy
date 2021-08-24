@@ -3,7 +3,6 @@ import random
 import winsound
 
 # Player Control Guide
-# ek function me co-ordinates bheke aur ek loop me arrow banayenge
 def guide_arrow(x,y,b,x1,y1,txt):
 	arr = turtle.Turtle()
 	arr.color("white")
