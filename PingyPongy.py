@@ -1,13 +1,39 @@
 import turtle
 import random
-import time
-import os
 import winsound
 
+# Player Control Guide
+# ek function me co-ordinates bheke aur ek loop me arrow banayenge
+def guide_arrow(x,y,b,x1,y1,txt):
+	arr = turtle.Turtle()
+	arr.color("white")
+	arr.width(7)
+	arr.penup()
+	arr.hideturtle()
+	arr.goto(x,y)
+	arr.pendown()
+	if b == False:
+		arr.left(180)
+	arr.left(90)
+	arr.forward(140)
+	arr.left(140)
+	arr.forward(30)
+	arr.backward(30)
+	arr.right(280)
+	arr.forward(30)
+	arr.penup()
+	arr.goto(x1, y1)
+	arr.write(txt, align = "center", font = ("Arial", 24, "bold"))
+
+guide_arrow(536, 95, True, 536, 45, "P")
+guide_arrow(-536, 95, True, -536, 45, "W")
+guide_arrow(536, -95, False, 536, -85, "L")
+guide_arrow(-536, -95, False, -536, -85, "S")
+
+# Screen
 wn = turtle.Screen()
 wn.title("PingyPongy")
 wn.bgcolor("#337BE6")
-# the width and height can be put as user's choice
 wn.setup(width = 1200, height = 700)
 wn.tracer(0)
 
@@ -17,12 +43,12 @@ r_score = l_score = 0
 gs = turtle.Turtle()
 gs.hideturtle()
 gs.penup()
-gs.goto(0,-290)
+gs.goto(0,-305)
 gs.color("White")
-gs.write("PRESS ANY KEY TO START", align="center",font=("Arial", 24, "bold"))
+gs.write("PRESS ANY KEY TO START", align = "center", font = ("Arial", 24))
 
-# Making a box
-box=turtle.Turtle()
+# Making a Box
+box = turtle.Turtle()
 box.width(2)
 box.color("White")
 box.speed(0)
@@ -58,14 +84,14 @@ plate_l.goto(-460, 0)
 ball = turtle.Turtle()
 ball.speed(0)
 ball.shape("circle")
-ball.shapesize(stretch_len=0.7,stretch_wid=0.7)
+ball.shapesize(stretch_len = 0.7,stretch_wid = 0.7)
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
 ball_xdir = random.uniform(1.6, 2)
-ball_ydir = random.uniform(1, 2)
+ball_ydir = random.uniform(0.5, 2)
 
-# Score Writing
+# Displaying Score
 pen = turtle.Turtle()
 pen.speed(0)
 pen.shape("square")
@@ -73,10 +99,11 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 270)
-pen.write("Player L : 0\t\t\tPlayer R : 0", align="center",font=("roboto", 24, "bold"))
+pen.write("Player L : 0\t\t\tPlayer R : 0", align = "center",font = ("roboto", 24, "bold"))
 
 wn.update()
 
+# Movements
 def plate_r_up():
 	y = plate_r.ycor()
 	if y <= 218:
@@ -103,35 +130,47 @@ wn.onkeypress(plate_r_down, "l")
 wn.onkeypress(plate_l_up, "w")
 wn.onkeypress(plate_l_down, "s")
 
+# Game Execution
 def run_game():
 	gs.clear()
 	while True:
 		global ball_xdir, ball_ydir, l_score, r_score
 		ball.goto(ball.xcor() + ball_xdir, ball.ycor() + ball_ydir)
 
+		# Collision with Up and Down Confinements of Box
 		if ball.ycor() > 245:
 			winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
-		if ball.ycor() < -245:
+		elif ball.ycor() < -245:
 			winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
+
+		# Collision with Plate-R
 		if ball.xcor() >= (plate_r.xcor() - 15) and ball.xcor() <= 447.5:
 			if ball.ycor() <= (plate_r.ycor() + 39) and ball.ycor() >= (plate_r.ycor() - 39):
 				winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
 				ball_xdir = random.uniform(1.6, 2) * -1
-				ball_ydir = random.uniform(1, 2) * random.choice([1, -1])
+				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 				
-		if ball.xcor() <= (plate_l.xcor() + 15) and ball.xcor() >= -447.5: # (... or ball.ycor() close to plate)
+		# Collision with Plate-R
+		elif ball.xcor() <= (plate_l.xcor() + 15) and ball.xcor() >= -447.5:
 			if ball.ycor() <= (plate_l.ycor() + 39) and ball.ycor() >= (plate_l.ycor() - 39):
 				winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
 				ball_xdir = random.uniform(1.6, 2)
-				ball_ydir = random.uniform(1, 2) * random.choice([1, -1])
+				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
+		
+		elif ball.xcor() > 445 and ball.ycor() <= plate_r.ycor() + 40 and ball.ycor() >= plate_r.ycor() - 40:
+			ball_ydir *= -1
 
+		elif ball.xcor() < -445 and ball.ycor() <= plate_l.ycor() + 40 and ball.ycor() >= plate_l.ycor() - 40:
+			ball_ydir *= -1
+
+		# Collision with Right and Left Confinements of the Box
 		if ball.xcor() > 493:
 			winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
 			ball_xdir = - random.uniform(1.6, 2)
-			ball_ydir = random.uniform(1, 2) * random.choice([1, -1])
+			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 			r_score += 1
 			pen.clear()
 			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("roboto", 24, "bold"))
@@ -141,11 +180,11 @@ def run_game():
 			wn.update()
 			break
 		
-		if ball.xcor() < -493:
+		elif ball.xcor() < -493:
 			winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
 			ball_xdir = random.uniform(1.6, 2)
-			ball_ydir = random.uniform(1, 2) * random.choice([1, -1])
+			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 			l_score += 1
 			pen.clear()
 			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("roboto", 24, "bold"))
@@ -155,7 +194,6 @@ def run_game():
 			wn.update()
 			break
 		wn.update()
-		# time.sleep(0.01)
 
 wn.listen()
 wn.onkeypress(run_game, " ")
