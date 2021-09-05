@@ -40,6 +40,7 @@ r_score = l_score = 0
 
 # Game Starter
 gs = turtle.Turtle()
+gs.speed(0)
 gs.hideturtle()
 gs.penup()
 gs.goto(0,-305)
@@ -48,10 +49,10 @@ gs.write("PRESS ANY KEY TO START", align = "center", font = ("Arial", 24))
 
 # Making a Box
 box = turtle.Turtle()
-box.width(2)
-box.color("White")
 box.speed(0)
 box.hideturtle()
+box.width(2)
+box.color("White")
 box.penup()
 box.goto(500,255)
 box.pendown()
@@ -138,35 +139,37 @@ def run_game():
 
 		# Collision with Up and Down Confinements of Box
 		if ball.ycor() > 245:
-			winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
+			winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
 		elif ball.ycor() < -245:
-			winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
+			winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
 
 		# Collision with Plate-R
 		if ball.xcor() >= (plate_r.xcor() - 15) and ball.xcor() <= 447.5:
 			if ball.ycor() <= (plate_r.ycor() + 39) and ball.ycor() >= (plate_r.ycor() - 39):
-				winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
+				winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 				ball_xdir = random.uniform(1.6, 2) * -1
 				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 				
 		# Collision with Plate-R
 		elif ball.xcor() <= (plate_l.xcor() + 15) and ball.xcor() >= -447.5:
 			if ball.ycor() <= (plate_l.ycor() + 39) and ball.ycor() >= (plate_l.ycor() - 39):
-				winsound.PlaySound("ballhit2.wav", winsound.SND_ASYNC)
+				winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 				ball_xdir = random.uniform(1.6, 2)
 				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
 		
 		elif ball.xcor() > 445 and ball.ycor() <= plate_r.ycor() + 40 and ball.ycor() >= plate_r.ycor() - 40:
+			winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
 
 		elif ball.xcor() < -445 and ball.ycor() <= plate_l.ycor() + 40 and ball.ycor() >= plate_l.ycor() - 40:
+			winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
 			ball_ydir *= -1
 
 		# Collision with Right and Left Confinements of the Box
 		if ball.xcor() > 493:
-			winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+			winsound.PlaySound("SideHit.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
 			ball_xdir = - random.uniform(1.6, 2)
 			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
@@ -180,7 +183,7 @@ def run_game():
 			break
 		
 		elif ball.xcor() < -493:
-			winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+			winsound.PlaySound("SideHit.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
 			ball_xdir = random.uniform(1.6, 2)
 			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
