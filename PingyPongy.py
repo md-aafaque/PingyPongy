@@ -2,6 +2,47 @@ import turtle
 import random
 import winsound
 
+# Screen
+wn = turtle.Screen()
+wn.title("PingyPongy")
+wn.bgcolor("#337BE6")
+wn.setup(width = 1200, height = 700)
+wn.tracer(0)
+
+# Making a Box
+box = turtle.Turtle()
+box.speed(0)
+box.hideturtle()
+box.width(2)
+box.color("White")
+box.penup()
+box.goto(500,255)
+box.pendown()
+for i in range(2):
+	box.right(90)
+	box.forward(510)
+	box.right(90)
+	box.forward(1000)
+
+# Displaying Score
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 270)
+pen.write("Player L : 0\t\t\tPlayer R : 0", align = "center",font = ("Courier", 24, "bold"))
+
+# Game Starter
+gs = turtle.Turtle()
+gs.speed(0)
+gs.hideturtle()
+gs.penup()
+gs.goto(0,-305)
+gs.color("White")
+gs.write("PRESS ANY KEY TO START", align = "center", font = ("Arial", 24))
+
 # Player Control Guide
 def guide_arrow(x,y,b,x1,y1,txt):
 	arr = turtle.Turtle()
@@ -29,39 +70,6 @@ guide_arrow(-536, 95, True, -536, 45, "W")
 guide_arrow(536, -95, False, 536, -85, "L")
 guide_arrow(-536, -95, False, -536, -85, "S")
 
-# Screen
-wn = turtle.Screen()
-wn.title("PingyPongy")
-wn.bgcolor("#337BE6")
-wn.setup(width = 1200, height = 700)
-wn.tracer(0)
-
-r_score = l_score = 0
-
-# Game Starter
-gs = turtle.Turtle()
-gs.speed(0)
-gs.hideturtle()
-gs.penup()
-gs.goto(0,-305)
-gs.color("White")
-gs.write("PRESS ANY KEY TO START", align = "center", font = ("Arial", 24))
-
-# Making a Box
-box = turtle.Turtle()
-box.speed(0)
-box.hideturtle()
-box.width(2)
-box.color("White")
-box.penup()
-box.goto(500,255)
-box.pendown()
-for i in range(2):
-	box.right(90)
-	box.forward(510)
-	box.right(90)
-	box.forward(1000)
-
 # Plate Right
 plate_r = turtle.Turtle()
 plate_r.shape("square")
@@ -82,26 +90,14 @@ plate_l.goto(-460, 0)
 
 # Ball in the game
 ball = turtle.Turtle()
-ball.speed(0)
+ball.speed(1)
 ball.shape("circle")
 ball.shapesize(stretch_len = 0.7,stretch_wid = 0.7)
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball_xdir = random.uniform(1.6, 2)
-ball_ydir = random.uniform(0.5, 2)
-
-# Displaying Score
-pen = turtle.Turtle()
-pen.speed(0)
-pen.shape("square")
-pen.color("white")
-pen.penup()
-pen.hideturtle()
-pen.goto(0, 270)
-pen.write("Player L : 0\t\t\tPlayer R : 0", align = "center",font = ("Courier", 24, "bold"))
-
-wn.update()
+ball_xdir = random.uniform(0.4, 0.5)
+ball_ydir = random.uniform(0.12, 0.5)
 
 # Movements
 def plate_r_up():
@@ -130,6 +126,10 @@ wn.onkeypress(plate_r_down, "l")
 wn.onkeypress(plate_l_up, "w")
 wn.onkeypress(plate_l_down, "s")
 
+r_score = l_score = 0
+
+wn.update()
+
 # Game Execution
 def run_game():
 	gs.clear()
@@ -149,15 +149,15 @@ def run_game():
 		if ball.xcor() >= (plate_r.xcor() - 15) and ball.xcor() <= 447.5:
 			if ball.ycor() <= (plate_r.ycor() + 39) and ball.ycor() >= (plate_r.ycor() - 39):
 				winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
-				ball_xdir = random.uniform(1.6, 2) * -1
-				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
+				ball_xdir = random.uniform(0.4, 0.5) * -1
+				ball_ydir = random.uniform(0.12, 0.5) * random.choice([1, -1])
 				
 		# Collision with Plate-R
 		elif ball.xcor() <= (plate_l.xcor() + 15) and ball.xcor() >= -447.5:
 			if ball.ycor() <= (plate_l.ycor() + 39) and ball.ycor() >= (plate_l.ycor() - 39):
 				winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
-				ball_xdir = random.uniform(1.6, 2)
-				ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
+				ball_xdir = random.uniform(0.4, 0.5)
+				ball_ydir = random.uniform(0.12, 0.5) * random.choice([1, -1])
 		
 		elif ball.xcor() > 445 and ball.ycor() <= plate_r.ycor() + 40 and ball.ycor() >= plate_r.ycor() - 40:
 			winsound.PlaySound("Collision.wav", winsound.SND_ASYNC)
@@ -171,8 +171,8 @@ def run_game():
 		if ball.xcor() > 493:
 			winsound.PlaySound("SideHit.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
-			ball_xdir = - random.uniform(1.6, 2)
-			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
+			ball_xdir = - random.uniform(0.4, 0.5)
+			ball_ydir = random.uniform(0.12, 0.5) * random.choice([1, -1])
 			r_score += 1
 			pen.clear()
 			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("Courier", 24, "bold"))
@@ -185,8 +185,8 @@ def run_game():
 		elif ball.xcor() < -493:
 			winsound.PlaySound("SideHit.wav", winsound.SND_ASYNC)
 			ball.goto(0,0)
-			ball_xdir = random.uniform(1.6, 2)
-			ball_ydir = random.uniform(0.5, 2) * random.choice([1, -1])
+			ball_xdir = random.uniform(0.4, 0.5)
+			ball_ydir = random.uniform(0.12, 0.5) * random.choice([1, -1])
 			l_score += 1
 			pen.clear()
 			pen.write("Player L : {}\t\t\tPlayer R : {}".format(r_score, l_score), align="center", font=("Courier", 24, "bold"))
